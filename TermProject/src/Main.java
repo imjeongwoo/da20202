@@ -16,13 +16,11 @@ public class Main {
         }
         System.out.println();
 
-        int k = sc.nextInt(); // k 값 입력력
-        int[][] range = new int[k][2];
-        for (int x = 0; x < k; x++) {
-            for (int y = 0; y < 2; y++) {
-                range[x][y] = sc.nextInt(); // 구간 입력
+        int[] range = new int[2];
+            for (int i = 0; i < 2; i++) {
+                range[i] = sc.nextInt(); // 구간 입력
             }
-            start = range[x][0]; end = range[x][1];
+            start = range[0]; end = range[1];
             max = min = arr[start];
             sum = 0;
             for (int i = start; i <= end; i++) {
@@ -31,6 +29,5 @@ public class Main {
                 sum += arr[i];
             }
             System.out.println(min + " " + max + " " + sum);
-        }
     }
 }
