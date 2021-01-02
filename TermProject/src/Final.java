@@ -14,10 +14,13 @@ public class Final {
         arr = new int[n+1]; sumArr = new int[n+1];
         minSegTree = new int[4*n]; maxSegTree = new int[4*n];
 
-        makeData(n); // 데이터 생성, 누합 저적
+        long t = System.currentTimeMillis();
+        makeData(n); // 데이터 생성, 누적 합 저장
         initMinTree(1, 1, n);
         initMaxTree(1, 1, n);
-        findMinMaxSum(k, n);    // 구간 최소, 최대, 합
+        findMinMaxSum(k, n);
+        long elapsed = System.currentTimeMillis() - t;
+        System.out.println(elapsed+"ms");
     }
     // 랜덤 데이터 생성 및 누적합 저장함수
     public static void makeData(int n) {
@@ -26,9 +29,9 @@ public class Final {
             arr[i] = rand.nextInt(1000000) + 1;
             // 누적 합을 sum배열에 저장
             sumArr[i] = sumArr[i-1] + arr[i];
-            System.out.print(arr[i]+" ");   // data 값 출력
+//            System.out.print(arr[i]+" ");   // data 값 출력
         }
-        System.out.println();
+//        System.out.println();
     }
     // minSegTree init function
     public static int initMinTree(int node, int start, int end) {
@@ -36,8 +39,8 @@ public class Final {
         if(start == end) return minSegTree[node] = arr[start];
 
         int mid = (start+end)/2;
-        int leftChild = initMinTree(2*node, start, mid); // 왼쪽 자식 노드(2 * 현재노드index)
-        int rightChild = initMinTree(2*node+1, mid+1, end); // 오른쪽 자식 노드(2 * 현재노드index + 1)
+        int leftChild = initMinTree(2*node, start, mid); // 왼쪽 자식 노드(2 * 현재 index)
+        int rightChild = initMinTree(2*node+1, mid+1, end); // 오른쪽 자식 노드(2 * 현재 index + 1)
         return minSegTree[node] = (leftChild < rightChild) ? leftChild : rightChild;  // 둘중에 작은값
     }
     // maxSegTree init
@@ -52,7 +55,7 @@ public class Final {
     }
     public static int findMin(int node, int start, int end, int left, int right) {
         if (left > end || right < start) return Integer.MAX_VALUE;
-        if (left <= start && right >= end) return minSegTree[node];
+        if (left <= start && end <= right) return minSegTree[node];
 
         int mid = (start+end)/2;
         int leftChild = findMin(2*node, start, mid, left, right);
@@ -60,8 +63,8 @@ public class Final {
         return (leftChild < rightChild) ? leftChild : rightChild;
     }
     public static int findMax(int node, int start, int end, int left, int right) {
-        if (left > end || right < start) return Integer.MIN_VALUE;
-        if (left <= start && right >= end) return maxSegTree[node];
+        if (left > end || right < start) return Integer.MIN_VALUE; // 찾을 수 없을때 다른 노드에 있으므로 작은
+        if (left <= start && end <= right) return maxSegTree[node];
 
         int mid = (start+end)/2;
         int leftChild = findMax(2*node, start, mid, left, right);
@@ -81,9 +84,8 @@ public class Final {
             int min = findMin(1, 1, n, start, end);
             int max = findMax(1, 1, n, start, end);
             int sum = sumArr[end] - sumArr[start-1];
-
-            System.out.println(i+1 + "번째 구간 = (" + start + ", " + end + ")");
-            System.out.println("Min: " + min + " Max: " + max + " Sum: " + sum + "\n");
+//            System.out.println(i+1 + "번째 구간 = (" + start + ", " + end + ")");
+//            System.out.println("Min: " + min + " Max: " + max + " Sum: " + sum + "\n");
         }
     }
 }
